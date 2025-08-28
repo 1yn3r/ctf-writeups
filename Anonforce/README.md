@@ -47,32 +47,41 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 Có vẻ như chúng ta đã mở cổng 21 và cổng 22 trên máy chủ. Cổng 21 có vẻ bị cấu hình sai, hãy xem xét kỹ hơn.
 Chúng ta có thể đăng nhập vào FTP bằng tên người dùng ẩn danh và chỉ định bất kỳ thông tin nào cho mật khẩu.
-Ngay lập tức chúng ta có thể cd vào trang chủ và xác định người dùng có thể sử dụng SSH và lấy cờ user.txt.
+Ngay lập tức chúng ta có thể cd vào trang chủ và xác định người dùng có thể sử dụng SSH và lấy cờ user.txt.  
 ![Scan result](images/image.png)
 
-Nhìn vào các thư mục, chúng ta có thể thấy một thư mục có tên là "notread" liệt kê các nội dung sau:
+Nhìn vào các thư mục, chúng ta có thể thấy một thư mục có tên là "notread" liệt kê các nội dung sau:  \
 ![Scan result](images/image1.png)
 
 Chúng ta có thể tải xuống cả hai tệp này bằng lệnh mget *.
-Sau khi tải xuống các tệp, chúng ta cần giải mã các tệp, vì vậy trước tiên chúng ta nên sử dụng lệnh gpg để thử nhập tệp khóa riêng private.asc. Rất tiếc, chúng ta cần mật khẩu để hoàn tất quá trình này.
+Sau khi tải xuống các tệp, chúng ta cần giải mã các tệp, vì vậy trước tiên chúng ta nên sử dụng lệnh gpg để thử nhập tệp khóa riêng private.asc. Rất tiếc, chúng ta cần mật khẩu để hoàn tất quá trình này.  
 ![Scan result](images/image2.png)
 
-Chúng ta có thể thử băm tệp và chạy nó thông qua John The Ripper. Chúng ta cần mô-đun gpg2john, thường được cài đặt sẵn với John The Ripper. Như bạn có thể thấy bên dưới, chúng ta định vị mô-đun, sau đó thực thi nó và định nghĩa tệp khóa riêng tư cùng với lệnh locate để xuất ra mã băm:
+Chúng ta có thể thử băm tệp và chạy nó thông qua John The Ripper. Chúng ta cần mô-đun gpg2john, thường được cài đặt sẵn với John The Ripper. Như bạn có thể thấy bên dưới, chúng ta định vị mô-đun, sau đó thực thi nó và định nghĩa tệp khóa riêng tư cùng với lệnh locate để xuất ra mã băm:  
+
 ![Scan result](images/image3.png)
 
 Sau khi băm, chúng ta có thể chạy John. Tôi đã xóa mật khẩu khỏi hình ảnh sau theo hướng dẫn của THM.
+
+
 ![Scan result](images/image4.png)
 Bây giờ chúng ta có thể thử nhập lại khóa private.asc và khi được yêu cầu nhập mật khẩu, tôi đã nhập mật khẩu mà John đã bẻ khóa.
+
+
 ![Scan result](images/image5.png)
 
 Bây giờ chúng ta đã nhập khóa. Tiếp theo, chúng ta cần xem khóa này có giải mã được tệp backup.pgp mà chúng ta đã tải xuống trước đó hay không.
 Sau khi chạy lệnh bên dưới và nhập mật khẩu đã lấy trước đó, chúng ta có thể thấy backup.pgp có vẻ là bản sao lưu của /etc/shadow.
+
+
 ![Scan result](images/image6.png)
 
 Chúng ta có thể chạy tệp này với John để xem liệu chúng ta có thể bẻ khóa được mã băm của tài khoản hay không.
+
 ![Scan result](images/image7.png)
 
 Trong trường hợp này, tôi chỉ tìm được mã băm cho tài khoản root. Tôi đã thử thêm vài mật khẩu nữa nhưng vẫn không tìm được tài khoản người dùng. Hãy xem liệu chúng ta có thể SSH vào root được không vì cổng 22 đang mở.
+
 ![Scan result](images/image8.png)
 
 
