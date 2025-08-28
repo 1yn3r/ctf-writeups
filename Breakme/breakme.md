@@ -23,3 +23,4 @@ There are two open ports:
 80/HTTP
 Web 80
 Visiting http://10.10.225.113/ displays the default page for Apache.
+![Scan result](images/web_80_index.png)
