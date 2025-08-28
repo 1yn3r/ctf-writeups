@@ -1,9 +1,9 @@
 TryHackMe - Wgel CTF Writeup  
-Tools used:
-Nmap
-1.Dirsearch
-2.Gobuster
-3.GTFOBins
+Tools used:  
+Nmap  
+1.Dirsearch  
+2.Gobuster  
+3.GTFOBins  
 Scanning and Enumeration  
 
 **LƯU Ý:** Địa chỉ IP của máy sẽ được biểu diễn là `10.10.x.x` vì TryHackMe cấp IP khác nhau cho từng người dùng.  
