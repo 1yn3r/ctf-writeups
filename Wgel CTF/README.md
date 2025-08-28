@@ -35,12 +35,9 @@ nmap --script vuln -p 80 10.10.x.x -oN nse-vuln.txt
 
 Enumeration Website  
 
-Từ đây, bên ngoài hệ thống không còn gì nhiều để khai thác.  
-Chuyển trọng tâm sang website chạy trên **port 80**.  
+Từ đây, bên ngoài hệ thống không còn gì nhiều để khai thác. Chuyển trọng tâm sang website chạy trên **port 80**.  
 
-
-Khi truy cập website, bạn sẽ thấy trang mặc định Apache2 Ubuntu.  
-Hãy bỏ qua trang đó và bắt đầu enumerate website ngay.  
+Khi truy cập website, bạn sẽ thấy trang mặc định Apache2 Ubuntu. Hãy bỏ qua trang đó và bắt đầu enumerate website ngay.  
 
 
 Bạn có thể dùng **Dirsearch** hoặc **Gobuster** (mình hay dùng Gobuster).  
