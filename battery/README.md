@@ -172,7 +172,9 @@ Phần mở rộng: php, html, txt, js, bak, zip, log, conf, inc | Phương th�
 ```
 Đây là các Điểm cuối khác nhau, còn có một số điểm khác nữa mà tôi cũng tìm thấy khi sử dụng FFUF
 Bây giờ chúng ta hãy thử ghé thăm các điểm cuối này và xem chúng ta sẽ thấy gì ở đó  
+
 ![Scan result](images/1.png)
+
 Khi tôi tạo tài khoản bằng /register.php và sau đó đăng nhập, có trang /acc.php mà tôi không thể truy cập vào đó
 Bây giờ tôi thử đi đến một số điểm cuối khác và cố gắng xem ở đó tôi có thể tìm ra thêm điều gì:
 
@@ -303,25 +305,30 @@ __cxa_finalize@@GLIBC_2.2.5
 ```
 Ở đây tôi nhận được thông tin khác nhau nhưng thông tin tôi thích là về tên người dùng ở đây, ở đây chúng tôi có tên người quản trị và tên người dùng khác
 Ở bảng quản trị, có thêm một lỗ hổng nữa:  
+
 ![Scan result](images/2.png)
 
 Có một số lượng ký tự cố định mà bạn có thể nhập vào tên người dùng. Tôi nghĩ là 14. Đây là lỗ hổng cắt bớt SQL mà chúng ta sẽ khai thác ngay bây giờ, hãy cùng xem nhé.
 Đầu tiên, chúng ta hãy xem điều gì xảy ra khi chúng ta thử đăng ký tên người dùng quản trị này tại admin@bank.a trong trang đăng ký
+
 ![Scan result](images/3.png)
 
 Lỗi này xuất hiện khi chúng ta thử đăng nhập bằng tên người dùng quản trị viên đó. Bây giờ chúng ta khai thác lỗ hổng này:
 Chúng ta khai thác lỗ hổng này bằng cách vượt quá giới hạn ký tự trong burp bằng cách thêm khoảng trắng và hãy xem chúng ta có đăng ký thành công hay không.
 
 Đây là Yêu cầu gốc trong burp khi chúng ta chặn nhưng bằng cách thêm khoảng trắng và tất cả thì yêu cầu sẽ tiếp tục như sau trong burp:
+
 ![Scan result](images/4.png)
 
 Đây là cách thực hiện và bạn thấy đấy, chúng ta có thể Đăng ký thành công tại đây trên trang này
 Nhấn enter hoặc nhấp để xem hình ảnh ở kích thước đầy đủ
+
 ![Scan result](images/5.png)
 
 Bây giờ chúng ta hãy thử đăng nhập bằng admin@bank.a
 
 Khi tôi vào /forms.php, tôi thấy mã xml này ở đó và ở đây tôi nhấn vào một số lệnh nhất định để thực hiện một số việc nhất định với mã xml này
+
 ![Scan result](images/6.png)  
 
 https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/XXE%20Injection/Intruders/xml-attacks.txt
@@ -329,13 +336,20 @@ https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/XXE%20Injection/
 Liên kết ở trên là các tải trọng khác nhau mà bạn có thể thử và đưa vào khối mã xml này
 
 Tôi thử sử dụng thứ đó:
+
 ![Scan result](images/7.png)  
+
 Khi tôi cố gắng tìm file /acc.php, tôi nhận được kết quả như sau:  
+
 ![Scan result](images/8.png)  
+
 Bây giờ tôi thử giải mã thứ này và đoán là tôi đã có được thông tin xác thực:  
+
 ![Scan result](images/9.png) 
+
 Khám phá Flag
 Tôi đã nhận được thông tin đăng nhập mà tôi đã đăng nhập qua ssh và tôi đã nhận được cờ cơ sở của mình thông qua nó
+
 ![Scan result](images/10.png)    
 
 Khám phá Flag User và Flag Root (Tăng đặc quyền)
@@ -351,6 +365,8 @@ Các mục nhập mặc định phù hợp cho cyber trên ubuntu:
 Tôi có thể chạy run.py này mà không cần mật khẩu khi tôi thấy quyền của nó
 
 ![Scan result](images/11.png)    
+
 Không có quyền nào được liệt kê cho chúng tôi với tư cách là người dùng mạng. Bây giờ tôi thử thực thi một số lệnh khác và sau đó lệnh mv hoạt động ở đây, và tôi đẩy tệp đó vào piyush.txt và nâng quyền shell lên run.py rồi thực thi nó. Ngay khi thực thi, tôi đã có quyền root.
+
 ![Scan result](images/12.png)    
 Đây là cách chúng ta có được cả cờ người dùng và cờ gốc
